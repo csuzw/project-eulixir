@@ -3,7 +3,6 @@ defmodule Mix.Tasks.ProjectEulixir.Solve do
 
   @shortdoc "Solve specified problem"
   
-  # FUTURE colorize text
   def run([]), do:                 put_message("No problem ID provided")
   def run([id | _]) do   
     case id |> Integer.parse do
