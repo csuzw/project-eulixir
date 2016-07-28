@@ -1,4 +1,4 @@
-# TODO
+# TASKS
 
 * problems
     * fill out definitions file
@@ -15,3 +15,5 @@
     * live update ala elixir-koans
 * misc
     * colorize output messages
+* issues
+    * investigate "module is not loaded and could not be found" error that was fixed by "mix clean"
