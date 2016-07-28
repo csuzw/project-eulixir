@@ -25,7 +25,7 @@ To execute and check solution for a problem, run:
 $ mix project_eulixir.solve 123
 ```
 
-The task argument is the problem number (in the above example [123](https://projecteuler.net/problem=123)).  This task is currently not implemented.
+The task argument is the problem number (in the above example [123](https://projecteuler.net/problem=123)).
 
 
 
