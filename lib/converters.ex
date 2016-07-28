@@ -64,6 +64,18 @@ defmodule Converters do
     end
   end
 
+  @doc """
+  Converts value to an MD5 hash
+
+  ## Examples
+
+    iex> Converters.to_md5(233168)
+    "e1edf9d1967ca96767dcc2b2d6df69f4"
+    
+  """
+  @spec to_md5(any) :: String.t
+  def to_md5(val), do: :crypto.hash(:md5, to_string(val)) |> Base.encode16 |> String.downcase
+
   @spec to_fragments(String.t) :: list(String.t)
   defp to_fragments(val), do: ~r/[A-Za-z1-9][a-z1-9]*/ |> Regex.scan(val, capture: :first) |> List.flatten
 end

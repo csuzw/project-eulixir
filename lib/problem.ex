@@ -1,3 +1,3 @@
 defmodule Problem do
-  @callback get_solution() :: number | :no_solution
+  @callback solution() :: number | :no_solution
 end
