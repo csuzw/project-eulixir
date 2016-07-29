@@ -13,7 +13,5 @@
     * clean up problems that don't exist any more
 * solve
     * live update ala elixir-koans
-* misc
-    * colorize output messages
 * issues
     * investigate "module is not loaded and could not be found" error that was fixed by "mix clean"
