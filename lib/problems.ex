@@ -17,6 +17,16 @@ defmodule Problems do
     @problems
   end
 
+  @spec get_problem_module(problem) :: String.t
+  def get_problem_module(problem) do
+    problem 
+    |> get_problem_module_name 
+    |> List.wrap 
+    |> Module.concat 
+    |> Code.ensure_compiled
+    |> handle_ensure_compiled_result(problem)
+  end
+
   @doc """
   Get file name for given problem
 
@@ -66,8 +76,47 @@ defmodule Problems do
     "Problems.#{module_name}"
   end
 
+  defp handle_ensure_compiled_result({:module, module}, _), do: module
+  defp handle_ensure_compiled_result(_, problem) do
+    problem
+    |> create_problem_module
+    |> require_problem_module
+  end
+
+  defp require_problem_module({:error, reason, _}), do: raise(CompileError, reason)
+  defp require_problem_module({:ok, path}) do
+    {module, _} = path |> Code.load_file |> List.first
+    module
+  end 
+
+  @spec create_problem_module(problem) :: {:ok, String.t} | {:error, String.t, String.t}
+  defp create_problem_module(problem) do
+    path = problem |> get_problem_file_path
+    content = problem |> get_problem_module_content
+
+    create_problem_module(path, content)
+  end
+
+  @spec create_problem_module(String.t, String.t) :: {:ok, String.t} | {:error, String.t, String.t}
+  defp create_problem_module(path, content) do
+    if !File.exists?(path) do
+      File.write(path, content) |> handle_write_file_result(path)
+    else
+      {:ok, path}
+    end
+  end 
+
+  defp handle_write_file_result({:error, reason}, path) do
+    IO.puts("Failed to create '#{path}': #{reason}")
+    {:error, reason, path}
+  end
+  defp handle_write_file_result(:ok, path) do
+    IO.puts("Successfully created '#{path}'")
+    {:ok, path}
+  end
+
   @spec get_problem_module_content(problem) :: String.t
-  def get_problem_module_content(problem) do
+  defp get_problem_module_content(problem) do
     name = problem |> get_problem_module_name
     description = problem.description
     resources = problem.resources |> to_module_attributes

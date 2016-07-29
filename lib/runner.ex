@@ -10,9 +10,8 @@ defmodule Runner do
     end
   end
 
-  for problem <- problems do
-    module = Module.concat([get_problem_module_name(problem)])
-
+  for problem <- problems,
+      module = problem |> get_problem_module do
     defp check_solution(unquote(problem.id)), do: unquote(module).solution |> check_solution(unquote(problem.solution))
   end
 
